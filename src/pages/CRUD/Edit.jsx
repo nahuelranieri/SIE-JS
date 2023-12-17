@@ -14,7 +14,7 @@ import {
 } from '@mui/material'
 import { React, useRef, useState } from 'react'
 
-const edit = () => {
+const Edit = () => {
  
 
   return (
@@ -68,4 +68,4 @@ const edit = () => {
   )
 }
 
-export default edit
+export default Edit

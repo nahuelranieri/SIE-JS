@@ -2,10 +2,10 @@ import { useState } from 'react'
 import './App.css'
 import { ThemeProvider, createTheme } from '@mui/material'
 import { Header } from './components/header/Header'
-import { TableComponent } from './components/table/TableComponent'
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
-import Edit from './components/table/edit'
+import Edit from './pages/CRUD/Edit'
+
 
 function App() {
   const theme = createTheme({
