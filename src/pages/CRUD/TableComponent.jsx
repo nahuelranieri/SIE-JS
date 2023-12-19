@@ -1,9 +1,11 @@
 import { Container, IconButton, Tooltip } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import { Visibility, Edit } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import randomData from './randomData.json'
+import { getAll, getById, updateById, deleteById } from '../../hooks/api';
+import axios from 'axios';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -42,39 +44,63 @@ const columns = [
     type: 'actions',
     headerName: 'Acciones',
     width: 100,
-    renderCell: (params) => (
+    renderCell: (params) => {
+      const onClick = (e) => {
+        const currentRow = params.row;
+        return alert(JSON.stringify(currentRow, null, 4));
+      };
+      return (
       <>
         <Tooltip title='Mostrar'>
           <IconButton><Visibility/></IconButton>
         </Tooltip>
         <Tooltip title='Editar'>
           <Link to="/edit">
-            <IconButton>
-              <Edit/>
+            <IconButton onClick={onClick}>
+              <Edit rowData={params.row}/>
             </IconButton>
           </Link>
         </Tooltip>
       </>
-    )
+    )}
   }
 ];
 
-const rows = randomData
+
 
 export const TableComponent = () => {
+
+  const [data, setData] = useState()
+  const [dataReady, setDataReady] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const allData = await getAll();
+        console.log('All Data:', allData.data);
+        setData(allData.data)
+        setDataReady(true);
+
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+    fetchData();
+  }, [dataReady])
+
+
   return (
     <Container sx={{my:1}}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 10 },
-          },
-        }}
-        pageSizeOptions={[5, 10, 20]}
-        checkboxSelection
-      />
+      {dataReady ? (
+        <DataGrid
+          rows={data}
+          columns={columns}
+          pageSize={10}
+          checkboxSelection
+        />
+      ) : (
+        <p>Cargando...</p>
+      )}
     </Container>
   )
 }

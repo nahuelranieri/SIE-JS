@@ -14,9 +14,10 @@ import {
 } from '@mui/material'
 import { React, useRef, useState } from 'react'
 
-const Edit = () => {
- 
 
+const Edit = ({rowData }) => {
+// Utiliza rowData en tu componente Edit
+console.log('Datos para editar:', rowData);
   return (
     <Container sx={{ my: 1 }}>
       <Card>
@@ -28,6 +29,7 @@ const Edit = () => {
               <TextField
                 label="Texto"
                 fullWidth
+                
               />
             </Grid>
             <Grid item xs={12} md={6}>
