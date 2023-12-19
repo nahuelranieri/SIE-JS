@@ -1,74 +1,93 @@
 import { Container, IconButton, Tooltip } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid';
-import { Visibility, Edit } from '@mui/icons-material';
+import { Visibility, Edit, AddCircle, Delete } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import randomData from './randomData.json'
 import { getAll, getById, updateById, deleteById } from '../../hooks/api';
 import axios from 'axios';
 
-const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'texto', headerName: 'Texto', width: 130 },
-  { field: 'fecha', headerName: 'Fecha', width: 130 },
-  {
-    field: 'booleano',
-    headerName: 'Booleano',
-    type: 'boolean',
-    width: 90,
-  },
-  {
-    field: 'numero_entero',
-    headerName: 'Entero',
-    type: 'number',
-    width: 90,
-  },
-  {
-    field: 'numero_decimal',
-    headerName: 'Decimal',
-    type: 'number',
-    width: 90,
-  },
-  {
-    field: 'created_at',
-    headerName: 'Creado',
-    width: 90,
-  },
-  {
-    field: 'updated_at',
-    headerName: 'Actualizado',
-    width: 90,
-  },
-  {
-    field: 'actions',
-    type: 'actions',
-    headerName: 'Acciones',
-    width: 100,
-    renderCell: (params) => {
-      const onClick = (e) => {
-        const currentRow = params.row;
-        return alert(JSON.stringify(currentRow, null, 4));
-      };
-      return (
-      <>
-        <Tooltip title='Mostrar'>
-          <IconButton><Visibility/></IconButton>
-        </Tooltip>
-        <Tooltip title='Editar'>
-          <Link to="/edit">
-            <IconButton onClick={onClick}>
-              <Edit rowData={params.row}/>
-            </IconButton>
-          </Link>
-        </Tooltip>
-      </>
-    )}
-  }
-];
+
 
 
 
 export const TableComponent = () => {
+
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'texto', headerName: 'Texto', width: 130 },
+    { field: 'fecha', headerName: 'Fecha', width: 130 },
+    {
+      field: 'booleano',
+      headerName: 'Booleano',
+      type: 'boolean',
+      width: 90,
+    },
+    {
+      field: 'numero_entero',
+      headerName: 'Entero',
+      type: 'number',
+      width: 90,
+    },
+    {
+      field: 'numero_decimal',
+      headerName: 'Decimal',
+      type: 'number',
+      width: 90,
+    },
+    {
+      field: 'created_at',
+      headerName: 'Creado',
+      width: 90,
+    },
+    {
+      field: 'updated_at',
+      headerName: 'Actualizado',
+      width: 90,
+    },
+    {
+      field: 'actions',
+      type: 'actions',
+      renderHeader: (params) => (
+        <>
+          {'Acciones'}
+          <Tooltip title='Agregar'>
+            <Link to={'/create'}>
+              <IconButton><AddCircle/></IconButton>
+            </Link>
+          </Tooltip>
+        </>
+      ),
+      width: 140,
+      renderCell: (params) => {
+        const handleDelete = async ()=> {
+          try {
+            await deleteById(params.row.id)
+            setDataReady((prev) => !prev);
+          } catch (error) {
+            
+          }
+        }
+        return (
+        <>
+          <Tooltip title='Mostrar'>
+            <IconButton><Visibility/></IconButton>
+          </Tooltip>
+          <Tooltip title='Editar'>
+            <Link to={`/edit/${params.row.id}`} state={{rowData: params.row}}>
+              <IconButton>
+                <Edit/>
+              </IconButton>
+            </Link>
+          </Tooltip>
+          <Tooltip title='Borrar'>
+            <IconButton onClick={handleDelete}><Delete/></IconButton>
+          </Tooltip>
+        </>
+      )}
+    },
+    
+  ];
 
   const [data, setData] = useState()
   const [dataReady, setDataReady] = useState(false);

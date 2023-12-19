@@ -5,6 +5,7 @@ import { Header } from './components/header/Header'
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Edit from './pages/CRUD/Edit'
+import Create from './pages/CRUD/Create'
 
 
 function App() {
@@ -25,7 +26,8 @@ function App() {
         <Header/>
         <Routes>
           <Route path='/' element={<Home/>}/>
-          <Route path='/edit' element={<Edit/>}/>
+          <Route path="/edit/:id" element={<Edit/>}/>
+          <Route path="/create" element={<Create/>}/>
         </Routes>
       </ThemeProvider>
     </>

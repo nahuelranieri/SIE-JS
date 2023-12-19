@@ -11,6 +11,16 @@ export const getAll = async () => {
       throw error;
     }
   };
+
+  export const addNew = async (newDATA) => {
+    try {
+      const response = await axios.post(BASE_URL, newDATA );
+      return response.data;
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
+  };
   
   // Función para obtener un elemento por ID
   export const getById = async (id) => {
