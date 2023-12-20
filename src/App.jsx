@@ -6,8 +6,8 @@ import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Edit from './pages/CRUD/Edit'
 import Create from './pages/CRUD/Create'
-
-
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 function App() {
   const theme = createTheme({
     palette: {
@@ -22,6 +22,7 @@ function App() {
   })
   return (
     <>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
       <ThemeProvider theme={theme}>
         <Header/>
         <Routes>
@@ -30,6 +31,7 @@ function App() {
           <Route path="/create" element={<Create/>}/>
         </Routes>
       </ThemeProvider>
+    </LocalizationProvider>
     </>
   )
 }

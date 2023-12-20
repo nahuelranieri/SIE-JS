@@ -24,6 +24,11 @@ export const TableComponent = () => {
       width: 90,
     },
     {
+      field: 'mail',
+      headerName: 'E-Mail',
+      width: 150,
+    },
+    {
       field: 'numero_entero',
       headerName: 'Entero',
       type: 'number',
