@@ -14,6 +14,45 @@ import axios from 'axios';
 export const TableComponent = () => {
 
   const columns = [
+    {
+      field: 'actions',
+      type: 'actions',
+      renderHeader: (params) => (
+        <>
+          {'Acciones'}
+          <Tooltip title='Agregar'>
+            <Link to={'/create'}>
+              <IconButton><AddCircle/></IconButton>
+            </Link>
+          </Tooltip>
+        </>
+      ),
+      width: 140,
+      renderCell: (params) => {
+        const handleDelete = async ()=> {
+          try {
+            await deleteById(params.row.id)
+            setDataReady((prev) => !prev);
+          } catch (error) {
+            
+          }
+        }
+        return (
+        <>
+          
+          <Tooltip title='Editar'>
+            <Link to={`/edit/${params.row.id}`} state={{rowData: params.row}}>
+              <IconButton>
+                <Edit/>
+              </IconButton>
+            </Link>
+          </Tooltip>
+          <Tooltip title='Borrar'>
+            <IconButton onClick={handleDelete}><Delete/></IconButton>
+          </Tooltip>
+        </>
+      )}
+    },
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'texto', headerName: 'Texto', width: 130 },
     { field: 'fecha', headerName: 'Fecha', width: 130 },
@@ -50,47 +89,7 @@ export const TableComponent = () => {
       headerName: 'Actualizado',
       width: 90,
     },
-    {
-      field: 'actions',
-      type: 'actions',
-      renderHeader: (params) => (
-        <>
-          {'Acciones'}
-          <Tooltip title='Agregar'>
-            <Link to={'/create'}>
-              <IconButton><AddCircle/></IconButton>
-            </Link>
-          </Tooltip>
-        </>
-      ),
-      width: 140,
-      renderCell: (params) => {
-        const handleDelete = async ()=> {
-          try {
-            await deleteById(params.row.id)
-            setDataReady((prev) => !prev);
-          } catch (error) {
-            
-          }
-        }
-        return (
-        <>
-          <Tooltip title='Mostrar'>
-            <IconButton><Visibility/></IconButton>
-          </Tooltip>
-          <Tooltip title='Editar'>
-            <Link to={`/edit/${params.row.id}`} state={{rowData: params.row}}>
-              <IconButton>
-                <Edit/>
-              </IconButton>
-            </Link>
-          </Tooltip>
-          <Tooltip title='Borrar'>
-            <IconButton onClick={handleDelete}><Delete/></IconButton>
-          </Tooltip>
-        </>
-      )}
-    },
+    
     
   ];
 
@@ -120,7 +119,7 @@ export const TableComponent = () => {
           rows={data}
           columns={columns}
           pageSize={10}
-          checkboxSelection
+          
         />
       ) : (
         <p>Cargando...</p>
