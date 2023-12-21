@@ -108,7 +108,9 @@ export const TableComponent = () => {
         console.error('Error:', error);
       }
     }
-    fetchData();
+    if (!dataReady) {
+      fetchData();
+    }
   }, [dataReady])
 
 
